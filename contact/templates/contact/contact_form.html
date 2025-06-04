@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+<h1>Contact Us</h1>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="field">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+    </div>
+    
+    <div class="field">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+    </div>
+    
+    <div class="field">
+        {{ form.message.label_tag }}
+        {{ form.message }}
+    </div>
+    
+    <button type="submit">Send Message</button>
+</form>
+
+{% if cached_message %}
+<div class="cached-message">
+    <strong>Cached message:</strong> {{ cached_message }}
+</div>
+{% endif %}
+{% endblock %}
