@@ -11,6 +11,19 @@
             margin: 0;
             padding: 0;
         }
+        .navbar {
+            background-color: #007BFF;
+            padding: 10px 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+        }
         .container {
             max-width: 600px;
             margin: 40px auto;
@@ -61,7 +74,23 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="navbar">
+        <div>
+          <strong>Contact</strong></a>
+            
+        </div>
+        <div>
+            {% if user.is_authenticated %}
+                Welcome, {{ user.username }}!
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container"> 
         {% block content %}
         {% endblock %}
     </div>

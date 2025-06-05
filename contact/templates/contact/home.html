@@ -1,0 +1,7 @@
+<!-- home.html -->
+{% extends 'base.html' %}
+{% block content %}
+   <h1>Welcome to the homepage!</h1>
+   <p>This is the landing page.</p>
+   <a href="{% url 'login' %}">login</a>or <a href="{% url 'register' %}">register</a>
+{% endblock %}

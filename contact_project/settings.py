@@ -111,6 +111,12 @@ DATABASES = {
 
 
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'spmacavity@gmail.com'
+EMAIL_HOST_PASSWORD = 'lieqhpllerjiqfre' # Not your Gmail password
 
 
 
@@ -177,3 +183,12 @@ CACHES = {
 
 # Optional: Set cache timeout (in seconds)
 CACHE_TTL = 60 * 15  # 15 minutes
+
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'contact_form'
+LOGOUT_REDIRECT_URL = 'login'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
