@@ -179,9 +179,27 @@ CELERY_TASK_SERIALIZER = 'json'
 #         }
 #     }
 # }
+
+
+
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+#     }
+# }
+
+
+import os
+
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.environ.get("REDIS_URL"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": os.environ.get("REDIS_URL").split(":")[2].split("@")[0],  # Extract password
+        }
     }
 }
 
