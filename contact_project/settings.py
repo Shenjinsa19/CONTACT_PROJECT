@@ -171,18 +171,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 import os
 import ssl
-from kombu import Connection
 
-REDIS_URL = os.environ.get('REDIS_URL')
+REDIS_URL = os.environ.get('REDIS_URL')  # Your rediss://... Upstash URL
 
 CELERY_BROKER_URL = REDIS_URL
 CELERY_RESULT_BACKEND = REDIS_URL
 
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'ssl': {
-        'ssl_cert_reqs': ssl.CERT_NONE  
+        'ssl_cert_reqs': ssl.CERT_NONE  # or ssl.CERT_OPTIONAL, ssl.CERT_REQUIRED
     }
 }
+
 CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS = {
     'ssl': {
         'ssl_cert_reqs': ssl.CERT_NONE
@@ -191,6 +191,7 @@ CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS = {
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+
 
 
 

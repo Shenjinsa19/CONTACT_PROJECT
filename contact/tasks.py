@@ -3,7 +3,7 @@ from celery import shared_task
 from django.core.mail import send_mail
 logger = logging.getLogger(__name__)
 @shared_task
-def send_contact_email(name, email, message):
+def send_contact_email(name,email,message):
     logger.info(f"Sending contact email from {name} <{email}>")
     send_mail(
         f"New Contact Message from {name}",

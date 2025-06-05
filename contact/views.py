@@ -25,19 +25,19 @@ logger = logging.getLogger(__name__)
 
 
 def contact_view(request):
-    if request.method == 'POST':
+    if request.method=='POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            message = form.save()
+            message=form.save()
             send_contact_email.delay(message.name, message.email, message.message)
             return redirect('contact_success')
 
     else:
         if request.user.is_authenticated:
             
-            cached_data = cache.get(f"user_data_{request.user.username}")
+            cached_data=cache.get(f"user_data_{request.user.username}")
             if cached_data:
-                form = ContactForm(initial={
+                form=ContactForm(initial={
                     'name': cached_data.get('name'),
                     'email': cached_data.get('email'),
                 })
@@ -53,11 +53,6 @@ def contact_view(request):
     return render(request, 'contact/contact_form.html', {
         'form': form,
     })
-
-
-
-
-
 
 
 
@@ -80,12 +75,10 @@ from django.contrib.auth.models import User
 
 
 def register_view(request):
-    if request.method == 'POST':
+    if request.method=='POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            
-
+            user=form.save()
             cache.set(f"user_data_{user.id}", {
                 'name': user.username,
                 'email': user.email,
@@ -108,8 +101,8 @@ def login_view(request):
         else:
             messages.error(request, 'Invalid username or password')
     else:
-        form = AuthenticationForm()
-    return render(request, 'contact/login.html', {'form': form})
+        form=AuthenticationForm()
+    return render(request,'contact/login.html',{'form': form})
 
 
 
@@ -118,4 +111,4 @@ def logout_view(request):
     return redirect('login')
 
 def home_view(request):
-    return render(request, 'contact/home.html')
+    return render(request,'contact/home.html')
