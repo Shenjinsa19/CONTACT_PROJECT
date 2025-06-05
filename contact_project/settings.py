@@ -172,26 +172,30 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 import os
 import ssl
 
-REDIS_URL = os.environ.get("REDIS_URL", "redis://localhost:6379/0")  # fallback for local dev
+# Get your Redis URL from environment variables
+REDIS_URL = os.environ.get("REDIS_URL")
 
 CELERY_BROKER_URL = REDIS_URL
 CELERY_RESULT_BACKEND = REDIS_URL
 
-# SSL config for rediss:// Upstash
+# SSL options (required for rediss://)
 ssl_options = {
     "ssl_cert_reqs": ssl.CERT_NONE
 }
 
+# Broker config (used to send tasks)
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     "ssl": ssl_options
 }
 
+# Backend config (used to receive results)
 CELERY_REDIS_BACKEND_TRANSPORT_OPTIONS = {
     "ssl_cert_reqs": ssl.CERT_NONE
 }
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+
 
 
 
