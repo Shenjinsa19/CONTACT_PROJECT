@@ -164,23 +164,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 #cel settings
-# CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis as broker
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-# CELERY_ACCEPT_CONTENT = ['json']
-# CELERY_TASK_SERIALIZER = 'json'
-
-import os
-import ssl
-REDIS_URL = os.environ.get('REDIS_URL')  
-CELERY_BROKER_URL = REDIS_URL
-CELERY_RESULT_BACKEND = REDIS_URL
-ssl_options = {
-    'ssl_cert_reqs': ssl.CERT_NONE
-}
-CELERY_BROKER_TRANSPORT_OPTIONS = {'ssl': ssl_options}
-CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS = {'ssl': ssl_options}
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis as broker
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+
+
 
 
 # CACHES = {
@@ -195,27 +184,14 @@ CELERY_TASK_SERIALIZER = 'json'
 
 
 
-#default
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-#     }
-# }
-
-
-import os
-
+# default
 CACHES = {
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.environ.get("REDIS_URL"),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "PASSWORD": os.environ.get("REDIS_URL").split(":")[2].split("@")[0],  # Extract password
-        }
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
     }
 }
-CACHE_TTL = 30  
+
+
 
 
 LOGIN_URL = 'login'
