@@ -192,6 +192,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 import os
+import ssl
 
 # Redis URL from environment, e.g. from Render or your .env file
 REDIS_URL = os.environ.get('REDIS_URL')
@@ -211,7 +212,7 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             # The key part to prevent SSL errors:
             "CONNECTION_POOL_KWARGS": {
-                "ssl_cert_reqs": None  # equivalent to ssl.CERT_NONE; use None for Upstash dev/test
+                "ssl_cert_reqs": ssl.CERT_NONE  # equivalent to ssl.CERT_NONE; use None for Upstash dev/test
             }
         }
     }
