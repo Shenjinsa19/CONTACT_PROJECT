@@ -192,30 +192,31 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 import os
-import ssl
 
-# 🔐 Use your actual Upstash Redis URL in environment variable REDIS_URL
-# Example format: rediss://default:<password>@<host>:6379
+# Redis URL from environment, e.g. from Render or your .env file
+REDIS_URL = os.environ.get('REDIS_URL')
 
-CELERY_BROKER_URL = os.environ.get("REDIS_URL")
-CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL")
-
+# Celery config
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
-# 🔐 CACHES setup using Upstash Redis
+# For Upstash rediss:// URLs, add ssl_cert_reqs parameter via OPTIONS for Django cache
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.environ.get("REDIS_URL"),  # same as used by Celery
+        "LOCATION": REDIS_URL,  # Use the same REDIS_URL with rediss://
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            # The key part to prevent SSL errors:
             "CONNECTION_POOL_KWARGS": {
-                "ssl_cert_reqs": ssl.CERT_NONE  # Disable SSL cert checks for Upstash
+                "ssl_cert_reqs": None  # equivalent to ssl.CERT_NONE; use None for Upstash dev/test
             }
         }
     }
 }
+
 
 
 
