@@ -170,11 +170,28 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CELERY_TASK_SERIALIZER = 'json'
 
 import os
+import ssl
+from kombu import Connection
+
 REDIS_URL = os.environ.get('REDIS_URL')
+
 CELERY_BROKER_URL = REDIS_URL
 CELERY_RESULT_BACKEND = REDIS_URL
+
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    'ssl': {
+        'ssl_cert_reqs': ssl.CERT_NONE  
+    }
+}
+CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS = {
+    'ssl': {
+        'ssl_cert_reqs': ssl.CERT_NONE
+    }
+}
+
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+
 
 
 
@@ -210,10 +227,7 @@ CACHES = {
         }
     }
 }
-
-
-# Optional: Set cache timeout (in seconds)
-CACHE_TTL = 60 * 15  # 15 minutes
+CACHE_TTL = 30  
 
 
 LOGIN_URL = 'login'
