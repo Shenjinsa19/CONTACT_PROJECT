@@ -23,5 +23,10 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 # Handle rediss:// (SSL connection) configuration for Redis
 redis_url = os.environ.get("REDIS_URL", "")
 if redis_url.startswith("rediss://"):
-    ssl_options = {"ssl_cert_reqs": ssl.CERT_NONE}  # For development, change to CERT_REQUIRED in production
-    app.conf.broker_transport_optio
+    ssl_options = {"ssl_cert_reqs": ssl.CERT_NONE}  # For dev, change to CERT_REQUIRED in production
+    app.conf.broker_transport_options = {"ssl": ssl_options}
+    app.conf.redis_backend_transport_options = {"ssl_cert_reqs": ssl.CERT_NONE}
+
+# Auto-discover tasks in all registered apps
+app.autodiscover_tasks()
+
