@@ -163,48 +163,16 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-#cel settings
-# CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis as broker
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-# CELERY_ACCEPT_CONTENT = ['json']
-# CELERY_TASK_SERIALIZER = 'json'
-
-import os
-import ssl
-
-# Get your Redis URL from environment variables
-REDIS_URL = os.environ.get("REDIS_URL")
-
-CELERY_BROKER_URL = REDIS_URL
-CELERY_RESULT_BACKEND = REDIS_URL
-
-# SSL options (required for rediss://)
-ssl_options = {
-    "ssl_cert_reqs": ssl.CERT_NONE
-}
-
-# Broker config (used to send tasks)
-CELERY_BROKER_TRANSPORT_OPTIONS = {
-    "ssl": ssl_options
-}
-
-# Backend config (used to receive results)
-CELERY_REDIS_BACKEND_TRANSPORT_OPTIONS = {
-    "ssl_cert_reqs": ssl.CERT_NONE
-}
-
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-
-
-
-
-
+# # # cel settings
+# # CELERY_BROKER_URL = 'redis://localhost:6379/0'  
+# # CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# # CELERY_ACCEPT_CONTENT = ['json']
+# # CELERY_TASK_SERIALIZER = 'json'
 
 # CACHES = {
 #     "default": {
 #         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://127.0.0.1:6379/0",  # Redis DB 1 for cache
+#         "LOCATION": "redis://127.0.0.1:6379/1",  # Redis DB 1 for cache
 #         "OPTIONS": {
 #             "CLIENT_CLASS": "django_redis.client.DefaultClient",
 #         }
@@ -213,13 +181,41 @@ CELERY_TASK_SERIALIZER = 'json'
 
 
 
-# default
+# # default
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+#     }
+# }
+
+
+
+
+import os
+import ssl
+
+# 🔐 Use your actual Upstash Redis URL in environment variable REDIS_URL
+# Example format: rediss://default:<password>@<host>:6379
+
+CELERY_BROKER_URL = os.environ.get("REDIS_URL")
+CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL")
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+# 🔐 CACHES setup using Upstash Redis
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.environ.get("REDIS_URL"),  # same as used by Celery
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {
+                "ssl_cert_reqs": ssl.CERT_NONE  # Disable SSL cert checks for Upstash
+            }
+        }
     }
 }
-
 
 
 
