@@ -11,9 +11,9 @@ import ssl
 from celery import Celery
 import os
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'contact_project.settings')
 
-app = Celery('your_project')
+app = Celery('contact_project')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 redis_url = os.environ.get('REDIS_URL', '')
