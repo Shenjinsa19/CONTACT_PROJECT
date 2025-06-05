@@ -171,29 +171,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 import os
 import ssl
-
-REDIS_URL = os.environ.get('REDIS_URL')  # Your rediss://... Upstash URL
-
+REDIS_URL = os.environ.get('REDIS_URL')  
 CELERY_BROKER_URL = REDIS_URL
 CELERY_RESULT_BACKEND = REDIS_URL
-
-CELERY_BROKER_TRANSPORT_OPTIONS = {
-    'ssl': {
-        'ssl_cert_reqs': ssl.CERT_NONE  # or ssl.CERT_OPTIONAL, ssl.CERT_REQUIRED
-    }
+ssl_options = {
+    'ssl_cert_reqs': ssl.CERT_NONE
 }
-
-CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS = {
-    'ssl': {
-        'ssl_cert_reqs': ssl.CERT_NONE
-    }
-}
-
+CELERY_BROKER_TRANSPORT_OPTIONS = {'ssl': ssl_options}
+CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS = {'ssl': ssl_options}
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
-
-
-
 
 
 # CACHES = {
@@ -208,7 +195,7 @@ CELERY_TASK_SERIALIZER = 'json'
 
 
 
-
+#default
 # CACHES = {
 #     "default": {
 #         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
